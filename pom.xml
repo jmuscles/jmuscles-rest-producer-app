@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>com.jmuscles</groupId>
-	<artifactId>jmuscles-rabbitmq-producer-app</artifactId>
+	<artifactId>jmuscles-rest-producer-app</artifactId>
 	<version>j8sb2713</version>
 
 	<properties>
@@ -135,7 +135,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>goel1man/jmuscles-rabbitmq-producer-app</repository>
+					<repository>goel1man/jmuscles-rest-producer-app</repository>
 					<tag>${project.version}</tag>
 					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
 				</configuration>

@@ -22,6 +22,37 @@ async-producer-config:
       defaultExchange: EXCHANGE_1
       nonPersistentDeliveryMode: false
 
+rest-producer-config:
+   getDemoUser:
+      processingConfig:
+         activeProducersInOrder:
+            - rabbitmq
+            - syncProcessing    
+         rabbitmq: 
+            defaultRoutingKey: DEMO_QUEUE
+            defaultExchange: EXCHANGE_1
+            nonPersistentDeliveryMode: false
+      responseConfig:
+         success:
+            status: 200
+            body: "success"
+            headers: 
+               Content-Type:  text/html
+               response-key1: response-value1
+               response-key2: response-value2
+               response-key3: response-value3
+               response-key4: response-value4
+               response-key5: response-value5            
+         failure:
+            status: 500
+            body: "failure"
+            headers: 
+               response-key1: response-error-value1
+               response-key2: response-error-value2
+               response-key3: response-error-value3
+               response-key4: response-error-value4
+               response-key5: response-error-value5            
+
 jmuscles:
    executors-config:
       restConfig:

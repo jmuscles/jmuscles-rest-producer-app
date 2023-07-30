@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jmuscles.async.producer.controller;
+package com.jmuscles.rest.producer.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,14 +27,12 @@ public class JmusclesRestController {
 	@Autowired
 	private JmusclesProducerHelper jmusclesProducerHelper;
 
-	// @RequestMapping(value={"/process", "/process/**"})
 	@RequestMapping("/process")
 	public ResponseEntity<?> queuePayload(Payload payload, TrackingDetail trackingDetail)
 			throws JsonProcessingException {
 		return jmusclesProducerHelper.queuePayload(payload, trackingDetail);
 	}
 
-	// @RequestMapping(value={"/process", "/process/**"})
 	@RequestMapping("/rest/{configKey}/**")
 	public ResponseEntity<?> processRest(HttpEntity<byte[]> requestEntity, HttpServletRequest request,
 			@PathVariable(required = true) String configKey) {
