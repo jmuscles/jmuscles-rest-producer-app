@@ -1,0 +1,55 @@
+spring:
+   application:
+      name: JmusclesEventProducer
+   rabbitmq:
+      addresses: localhost:5672
+      username: guest
+      password: guest
+    
+ #--profile group/include are adding files from class path but not from confihg server, please pass it from run arguments
+  #profiles:
+    #group:
+      #docker-local: rabbitmq-setup-local,executors-local,producer-local
+      #local: rabbitmq-setup-local,executors-local,producer-local
+      #dev: rabbitmq-setup-dev,executors-dev,producer-dev,datasource-dev
+      #prod: rabbitmq-setup-prod,executors-prod,producer-prod,datasource-prod  
+async-producer-config:
+   activeProducersInOrder: 
+      - rabbitmq
+      - syncProcessing
+   rabbitmq: 
+      defaultRoutingKey: DEMO_QUEUE
+      defaultExchange: EXCHANGE_1
+      nonPersistentDeliveryMode: false
+
+jmuscles:
+   executors-config:
+      restConfig:
+         connectionTimeout: 10000
+         readTimeout: 10000
+      restCalls:
+         test:
+            url: http://localhost:8080/place/list/IN
+            successCodePatterns:
+               200: null
+         getDemoUser:
+            url: https://gorest.co.in/public/v1/users
+            successCodePatterns:
+               200: null
+         createDemoUser:
+            url: https://gorest.co.in/public/v1/users
+            successCodePatterns:
+               200: null
+               401: null
+      sqlProcedures:
+         demo_proc_1:
+            dskey: null
+            procedure: procedure_name
+            successKey: P_RESP_CODE
+            successValue: '000'
+      sqlQueries:
+         insert_user_testdb:
+            dskey: testdb
+            query: insert into test.user(user_id, first_name, last_name, email, gender) values(:user_id, :first_name, :last_name,
+               :email, :gender);
+            successResponse: null

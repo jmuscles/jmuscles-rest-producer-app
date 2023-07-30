@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: JmuscleProducer
+    config:
+      name: ${spring.application.name}
+      label: pass_from_args
+      server:
+        bootstrap: true
+        git:
+          ignore-local-ssh-settings: true
+          uri: ${git_ssh_uri}
+          passphrase: ${passphrase}
+          privateKey: ${ssh_key}
+#Disable security of the Management endpoint
+management:
+   security:
+      enabled: false
