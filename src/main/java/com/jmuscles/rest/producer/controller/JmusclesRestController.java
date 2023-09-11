@@ -36,8 +36,9 @@ public class JmusclesRestController {
 	@RequestMapping("/rest/{configKey}/**")
 	public ResponseEntity<?> processRest(HttpEntity<byte[]> requestEntity, HttpServletRequest request,
 			@PathVariable(required = true) String configKey) {
+		String contextPath = request.getServletContext().getContextPath();
 		String uri = request.getRequestURI();
-		String urlSuffix = uri.replaceFirst("/event/rest/" + configKey, "");
+		String urlSuffix = uri.replaceFirst(contextPath + "/event/rest/" + configKey, "");
 		return jmusclesProducerHelper.processRestRequest(requestEntity, request, configKey, urlSuffix);
 	}
 

@@ -1,18 +1,13 @@
+# Use a base image with Java installed
 FROM openjdk:8-jdk-alpine
-MAINTAINER javamuscles
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} jmuscles-rabbitmq-consumer-app-j8sb2713.jar
-ENTRYPOINT ["java","-jar", \
-"-Dcom.sun.management.jmxremote=true", \
-"-Dcom.sun.management.jmxremote.port=9010", \
-"-Dcom.sun.management.jmxremote.local.only=false", \
-"-Dcom.sun.management.jmxremote.authenticate=false", \
-"-Dcom.sun.management.jmxremote.ssl=false", \
-"-Dcom.sun.management.jmxremote.rmi.port=9010", \
-"-Djava.rmi.server.hostname=localhost", \
-"/jmuscles-rabbitmq-consumer-app-j8sb2713.jar"]
-Expose 9010
-Expose 8080
-Expose 5671
-Expose 9871
 
+MAINTAINER javamuscles
+
+# Copy the application JAR into the container
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} jmuscles-rest-producer-app-j8sb2713-1.0.jar
+
+#RUN curl -L https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar --output opentelemetry-javaagent.jar
+# Set the ENTRYPOINT with CMD to pass JAVA_OPTS to the Java application
+COPY aws-opentelemetry-agent.jar opentelemetry-javaagent.jar
+ENTRYPOINT [ "sh", "-c", "java -javaagent:opentelemetry-javaagent.jar $JAVA_OPTS -jar jmuscles-rest-producer-app-j8sb2713-1.0.jar" ]

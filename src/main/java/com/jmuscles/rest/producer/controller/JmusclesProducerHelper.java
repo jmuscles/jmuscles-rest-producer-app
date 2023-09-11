@@ -57,6 +57,9 @@ public class JmusclesProducerHelper {
 			String configKey, String urlSuffix) {
 
 		RestProducerConfigProperties restProducerConfigProperties = restProducerConfigPropertiesMap.get(configKey);
+		if(restProducerConfigProperties==null) {
+			throw new RuntimeException("Invalid url, "+configKey+" is not configured. Please correct the configuration");
+		}
 		boolean queued = queueRestRequest(requestEntity, request, configKey, urlSuffix,
 				restProducerConfigProperties.getProcessingConfig());
 		return buildResponse(queued, restProducerConfigProperties.getResponseConfig());

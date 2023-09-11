@@ -1,0 +1,26 @@
+Configuration:
+  Properties:
+    Property:
+      - name: "springApplicationName"
+        value: "${sys:spring.application.name}"
+  Appenders:
+    Console:
+      - name: "console"
+        target: "SYSTEM_OUT"
+        JsonLayout:
+          compact: true
+          eventEol: true
+          includeStacktrace: true
+          objectMessageAsJsonObject: true
+          properties: true
+          propertiesAsList: true
+          KeyValuePair:
+            - key: "application"
+              value: "$${spring:spring.application.name}"
+            - key: "timestamp"
+              value: "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
+  Loggers:
+    Root:
+      level: "INFO"
+      AppenderRef:
+        - ref: "console"
