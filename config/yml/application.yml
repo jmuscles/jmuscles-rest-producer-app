@@ -19,6 +19,7 @@ async-producer-config:
 
 rest-producer-config:
    countryInfoService:
+      responseBuilder: SimpleResponseBuilder
       configByHttpMethods:
          POST:
             responseConfig:

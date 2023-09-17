@@ -1,10 +1,11 @@
 /**
  * 
  */
-package com.jmuscles.rest.producer.controller;
+package com.jmuscles.rest.producer.helper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
 import com.jmuscles.async.producer.AsyncPayloadDeliverer;
 import com.jmuscles.async.producer.properties.ProducerConfigProperties;
@@ -24,18 +24,20 @@ import com.jmuscles.processing.schema.requestdata.RequestData;
 import com.jmuscles.processing.schema.requestdata.RestRequestData;
 import com.jmuscles.rest.producer.config.RestConfPropsForConfigKey;
 import com.jmuscles.rest.producer.config.RestConfPropsForMethod;
-import com.jmuscles.rest.producer.config.RestResponseConfig;
+import com.jmuscles.rest.producer.response.ResponseBuilder;
 
 /**
  * 
  */
-@Component
 public class JmusclesProducerHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(JmusclesProducerHelper.class);
 
 	@Autowired
 	private AsyncPayloadDeliverer asyncPayloadDeliverer;
+
+	@Autowired
+	private ResponseBuilder responseBuilder;
 
 	@Autowired
 	private Map<String, RestConfPropsForConfigKey> restProducerConfigPropertiesMap;
@@ -80,8 +82,8 @@ public class JmusclesProducerHelper {
 
 		boolean queued = queueRestRequest(requestBody, httpHeader, method, configKey, urlSuffix,
 				producerConfigProperties);
-
-		return buildResponse(queued, restConfPropsForMethod.getResponseConfig());
+		logger.debug("Request is queued: " + queued);
+		return responseBuilder.buildResponse(createMap(queued, requestBody, httpHeader, request, method, configKey));
 	}
 
 	public boolean queueRestRequest(Serializable requestBody, Map<String, String> httpHeader, String httpMethod,
@@ -108,11 +110,6 @@ public class JmusclesProducerHelper {
 		return queued;
 	}
 
-	private ResponseEntity<?> buildResponse(boolean queued, Map<String, RestResponseConfig> restResponseConfigMap) {
-		RestResponseConfig response = restResponseConfigMap.get(queued ? "success" : "failure");
-		return new ResponseEntity<>(response.getBody(), response.getHeaders(), response.getStatus());
-	}
-
 	private Payload buildPayload(String method, String configKey, String urlSuffix, Serializable body,
 			Map<String, String> httpHeader) {
 		RestRequestData restRequestData = new RestRequestData(method, configKey, urlSuffix, body, httpHeader);
@@ -120,6 +117,19 @@ public class JmusclesProducerHelper {
 		ArrayList<RequestData> list = new ArrayList<RequestData>();
 		list.add(restRequestData);
 		return new Payload(list);
+	}
+
+	private static Map<String, Object> createMap(boolean queued, Serializable requestBody,
+			Map<String, String> httpHeader, HttpServletRequest request, String method, String configKey) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("queued", queued);
+		map.put("requestBody", requestBody);
+		map.put("httpHeader", httpHeader);
+		map.put("request", request);
+		map.put("method", method);
+		map.put("configKey", configKey);
+		return map;
 	}
 
 }
