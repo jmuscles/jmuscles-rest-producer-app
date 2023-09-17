@@ -3,12 +3,16 @@
  */
 package com.jmuscles.rest.producer.controller;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,12 +38,23 @@ public class JmusclesRestController {
 	}
 
 	@RequestMapping("/rest/{configKey}/**")
-	public ResponseEntity<?> processRest(HttpEntity<byte[]> requestEntity, HttpServletRequest request,
+	public ResponseEntity<?> processRestStringPayload(@RequestHeader Map<String, String> headers,
+			@RequestBody String requestBody, HttpServletRequest request,
 			@PathVariable(required = true) String configKey) {
 		String contextPath = request.getServletContext().getContextPath();
 		String uri = request.getRequestURI();
 		String urlSuffix = uri.replaceFirst(contextPath + "/event/rest/" + configKey, "");
-		return jmusclesProducerHelper.processRestRequest(requestEntity, request, configKey, urlSuffix);
+		return jmusclesProducerHelper.processRestRequest(requestBody, headers, request, configKey, urlSuffix);
+	}
+
+	@RequestMapping("/restByteArrayPayload/{configKey}/**")
+	public ResponseEntity<?> processRestByteArrayPayload(@RequestHeader Map<String, String> headers,
+			@RequestBody Serializable requestBody, HttpServletRequest request,
+			@PathVariable(required = true) String configKey) {
+		String contextPath = request.getServletContext().getContextPath();
+		String uri = request.getRequestURI();
+		String urlSuffix = uri.replaceFirst(contextPath + "/event/restByteArrayPayload/" + configKey, "");
+		return jmusclesProducerHelper.processRestRequest(requestBody, headers, request, configKey, urlSuffix);
 	}
 
 }

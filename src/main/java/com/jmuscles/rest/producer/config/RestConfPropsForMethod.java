@@ -10,7 +10,7 @@ import com.jmuscles.async.producer.properties.ProducerConfigProperties;
 /**
  * 
  */
-public class RestProducerConfigProperties {
+public class RestConfPropsForMethod {
 
 	private ProducerConfigProperties processingConfig;
 	private Map<String, RestResponseConfig> responseConfig;

@@ -1,7 +1,6 @@
 spring:
    application:
       name: JmusclesEventProducer
-    
  #--profile group/include are adding files from class path but not from confihg server, please pass it from run arguments
   #profiles:
     #group:
@@ -14,41 +13,98 @@ async-producer-config:
       - rabbitmq
       - syncProcessing
    rabbitmq: 
-      defaultRoutingKey: DEMO_QUEUE
-      defaultExchange: EXCHANGE_1
+      defaultRoutingKey: GENERIC_Q
+      defaultExchange: AP_GENERIC_DIRECT_EXCHANGE
       nonPersistentDeliveryMode: false
 
 rest-producer-config:
-   getDemoUser:
-      processingConfig:
-         activeProducersInOrder:
-            - rabbitmq
-            - syncProcessing    
-         rabbitmq: 
-            defaultRoutingKey: DEMO_QUEUE
-            defaultExchange: EXCHANGE_1
-            nonPersistentDeliveryMode: false
-      responseConfig:
-         success:
-            status: 200
-            body: "success"
-            headers: 
-               Content-Type:  text/html
-               response-key1: response-value1
-               response-key2: response-value2
-               response-key3: response-value3
-               response-key4: response-value4
-               response-key5: response-value5            
-         failure:
-            status: 500
-            body: "failure"
-            headers: 
-               response-key1: response-error-value1
-               response-key2: response-error-value2
-               response-key3: response-error-value3
-               response-key4: response-error-value4
-               response-key5: response-error-value5            
+   countryInfoService:
+      configByHttpMethods:
+         POST:
+            responseConfig:
+               success:
+                  status: 200
+                  body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
+                  headers: 
+                     Content-Type:  text/xml
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     Content-Type:  text/xml            
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
 
+   numberToWords:
+      configByHttpMethods:
+         GET:
+            responseConfig:
+               success:
+                  status: 200
+                  body: "success"
+                  headers: 
+                     Content-Type:  text/xml
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     Content-Type:  text/xml            
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
+   mockRest1:
+      configByHttpMethods:
+         GET:   
+            responseConfig:
+               success:
+                  status: 200
+                  body: "success"
+                  headers: 
+                     Content-Type:  application/json
+                     response-key1: response-value1
+                     response-key2: response-value2
+                     response-key3: response-value3
+                     response-key4: response-value4
+                     response-key5: response-value5            
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
+                     response-key3: response-error-value3
+                     response-key4: response-error-value4
+                     response-key5: response-error-value5
+   getDemoUser:
+      configByHttpMethods:
+         GET:
+            processingConfig:
+               activeProducersInOrder:
+                  - rabbitmq
+                  - syncProcessing    
+               rabbitmq: 
+                  defaultRoutingKey: DEMO_QUEUE
+                  defaultExchange: EXCHANGE_1
+                  nonPersistentDeliveryMode: false
+            responseConfig:
+               success:
+                  status: 200
+                  body: "success"
+                  headers: 
+                     Content-Type:  text/html
+                     response-key1: response-value1
+                     response-key2: response-value2
+                     response-key3: response-value3
+                     response-key4: response-value4
+                     response-key5: response-value5            
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
+                     response-key3: response-error-value3
+                     response-key4: response-error-value4
+                     response-key5: response-error-value5
 jmuscles:
    executors-config:
       restConfig:

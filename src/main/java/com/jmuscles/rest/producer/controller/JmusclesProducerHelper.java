@@ -13,7 +13,6 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +22,8 @@ import com.jmuscles.processing.schema.Payload;
 import com.jmuscles.processing.schema.TrackingDetail;
 import com.jmuscles.processing.schema.requestdata.RequestData;
 import com.jmuscles.processing.schema.requestdata.RestRequestData;
-import com.jmuscles.rest.producer.config.RestProducerConfigProperties;
+import com.jmuscles.rest.producer.config.RestConfPropsForConfigKey;
+import com.jmuscles.rest.producer.config.RestConfPropsForMethod;
 import com.jmuscles.rest.producer.config.RestResponseConfig;
 
 /**
@@ -38,7 +38,7 @@ public class JmusclesProducerHelper {
 	private AsyncPayloadDeliverer asyncPayloadDeliverer;
 
 	@Autowired
-	private Map<String, RestProducerConfigProperties> restProducerConfigPropertiesMap;
+	private Map<String, RestConfPropsForConfigKey> restProducerConfigPropertiesMap;
 
 	public ResponseEntity<?> queuePayload(Payload payload, TrackingDetail trackingDetail) {
 		boolean queued = false;
@@ -53,23 +53,41 @@ public class JmusclesProducerHelper {
 				: new ResponseEntity<>(null, null, HttpStatus.SC_EXPECTATION_FAILED);
 	}
 
-	public ResponseEntity<?> processRestRequest(HttpEntity<byte[]> requestEntity, HttpServletRequest request,
-			String configKey, String urlSuffix) {
+	public ResponseEntity<?> processRestRequest(Serializable requestBody, Map<String, String> httpHeader,
+			HttpServletRequest request, String configKey, String urlSuffix) {
 
-		RestProducerConfigProperties restProducerConfigProperties = restProducerConfigPropertiesMap.get(configKey);
-		if(restProducerConfigProperties==null) {
-			throw new RuntimeException("Invalid url, "+configKey+" is not configured. Please correct the configuration");
+		RestConfPropsForConfigKey restConfPropsForConfigKey = restProducerConfigPropertiesMap.get(configKey);
+		if (restConfPropsForConfigKey == null) {
+			throw new RuntimeException(
+					"Invalid url, " + configKey + " is not configured. Please correct the configuration");
 		}
-		boolean queued = queueRestRequest(requestEntity, request, configKey, urlSuffix,
-				restProducerConfigProperties.getProcessingConfig());
-		return buildResponse(queued, restProducerConfigProperties.getResponseConfig());
+		String method = request.getMethod();
+		RestConfPropsForMethod restConfPropsForMethod = null;
+
+		Map<String, RestConfPropsForMethod> configByHttpMethods = restConfPropsForConfigKey.getConfigByHttpMethods();
+		if (configByHttpMethods != null) {
+			restConfPropsForMethod = configByHttpMethods.get(method);
+		}
+		if (restConfPropsForMethod == null) {
+			throw new RuntimeException(
+					"Invalid http method, " + method + " is not configured. Please correct the configuration");
+		}
+
+		ProducerConfigProperties producerConfigProperties = restConfPropsForMethod.getProcessingConfig();
+		if (producerConfigProperties == null) {
+			producerConfigProperties = restConfPropsForConfigKey.getProcessingConfig();
+		}
+
+		boolean queued = queueRestRequest(requestBody, httpHeader, method, configKey, urlSuffix,
+				producerConfigProperties);
+
+		return buildResponse(queued, restConfPropsForMethod.getResponseConfig());
 	}
 
-	public boolean queueRestRequest(HttpEntity<byte[]> requestEntity, HttpServletRequest request, String configKey,
-			String urlSuffix, ProducerConfigProperties producerConfigProperties) {
+	public boolean queueRestRequest(Serializable requestBody, Map<String, String> httpHeader, String httpMethod,
+			String configKey, String urlSuffix, ProducerConfigProperties producerConfigProperties) {
 
-		Payload payload = buildPayload(request.getMethod(), configKey, urlSuffix, requestEntity.getBody(),
-				requestEntity.getHeaders().toSingleValueMap());
+		Payload payload = buildPayload(httpMethod, configKey, urlSuffix, requestBody, httpHeader);
 
 		boolean queued = false;
 		try {

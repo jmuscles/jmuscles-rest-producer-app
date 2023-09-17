@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import com.jmuscles.rest.producer.config.RestProducerConfigProperties;
+import com.jmuscles.rest.producer.config.RestConfPropsForConfigKey;
 
 /**
  * Hello world!
@@ -23,7 +23,7 @@ public class Application {
 
 	@Bean("restProducerConfigPropertiesMap")
 	@ConfigurationProperties(value = "rest-producer-config")
-	public Map<String, RestProducerConfigProperties> restProducerConfigProperties() {
+	public Map<String, RestConfPropsForConfigKey> restProducerConfigProperties() {
 		return new HashMap<>();
 	}
 
