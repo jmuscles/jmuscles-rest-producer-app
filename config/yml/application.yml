@@ -1,6 +1,3 @@
-spring:
-   application:
-      name: JmusclesEventProducer
  #--profile group/include are adding files from class path but not from confihg server, please pass it from run arguments
   #profiles:
     #group:
@@ -18,7 +15,24 @@ async-producer-config:
       nonPersistentDeliveryMode: false
 
 rest-producer-config:
-   countryInfoService:
+   countryInfoService_soap:
+      responseBuilder: CountryInfoServiceResponseBuilder
+      configByHttpMethods:
+         POST:
+            responseConfig:
+               success:
+                  status: 200
+                  body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
+                  headers: 
+                     Content-Type:  text/xml
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     Content-Type:  text/xml            
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
+   numberConversion_soap:
       responseBuilder: SimpleResponseBuilder
       configByHttpMethods:
          POST:
@@ -35,6 +49,53 @@ rest-producer-config:
                      Content-Type:  text/xml            
                      response-key1: response-error-value1
                      response-key2: response-error-value2
+   isbnservice_soap:
+      responseBuilder: SimpleResponseBuilder
+      configByHttpMethods:
+         POST:
+            responseConfig:
+               success:
+                  status: 200
+                  body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
+                  headers: 
+                     Content-Type:  text/xml
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     Content-Type:  text/xml            
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
+   calculator_soap:
+      configByHttpMethods:
+         POST:
+            responseConfig:
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     Content-Type:  text/xml            
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
+   tempconvert_soap:
+      configByHttpMethods:
+         POST:
+            responseConfig:
+               success:
+                  status: 200
+                  body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
+                  headers: 
+                     Content-Type:  text/xml
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     Content-Type:  text/xml            
+                     response-key1: response-error-value1
+                     response-key2: response-error-value2
+
+
+
 
    numberToWords:
       configByHttpMethods:
