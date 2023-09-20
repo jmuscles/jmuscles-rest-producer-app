@@ -24,12 +24,12 @@ rest-producer-config:
                   status: 200
                   body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
                   headers: 
-                     Content-Type:  text/xml
+                     Content-Type: text/xml
                failure:
                   status: 500
                   body: "failure"
                   headers: 
-                     Content-Type:  text/xml            
+                     Content-Type: text/xml            
                      response-key1: response-error-value1
                      response-key2: response-error-value2
    numberConversion_soap:
@@ -41,12 +41,12 @@ rest-producer-config:
                   status: 200
                   body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
                   headers: 
-                     Content-Type:  text/xml
+                     Content-Type: text/xml
                failure:
                   status: 500
                   body: "failure"
                   headers: 
-                     Content-Type:  text/xml            
+                     Content-Type: text/xml            
                      response-key1: response-error-value1
                      response-key2: response-error-value2
    isbnservice_soap:
@@ -58,14 +58,12 @@ rest-producer-config:
                   status: 200
                   body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
                   headers: 
-                     Content-Type:  text/xml
+                     Content-Type: text/xml
                failure:
                   status: 500
                   body: "failure"
                   headers: 
-                     Content-Type:  text/xml            
-                     response-key1: response-error-value1
-                     response-key2: response-error-value2
+                     Content-Type: text/xml            
    calculator_soap:
       configByHttpMethods:
          POST:
@@ -74,9 +72,7 @@ rest-producer-config:
                   status: 500
                   body: "failure"
                   headers: 
-                     Content-Type:  text/xml            
-                     response-key1: response-error-value1
-                     response-key2: response-error-value2
+                     Content-Type: text/xml            
    tempconvert_soap:
       configByHttpMethods:
          POST:
@@ -85,57 +81,58 @@ rest-producer-config:
                   status: 200
                   body: '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>'
                   headers: 
-                     Content-Type:  text/xml
+                     Content-Type: text/xml
                failure:
                   status: 500
                   body: "failure"
                   headers: 
-                     Content-Type:  text/xml            
-                     response-key1: response-error-value1
-                     response-key2: response-error-value2
-
-
-
-
-   numberToWords:
+                     Content-Type: text/xml            
+   restcountries:
+      responseBuilder: SimpleResponseBuilder
       configByHttpMethods:
-         GET:
+         POST:
             responseConfig:
                success:
                   status: 200
-                  body: "success"
+                  body: 'message successfully queued to be processed'
                   headers: 
-                     Content-Type:  text/xml
+                     Content-Type: application/json
                failure:
                   status: 500
                   body: "failure"
                   headers: 
-                     Content-Type:  text/xml            
-                     response-key1: response-error-value1
-                     response-key2: response-error-value2
-   mockRest1:
+                     Content-Type: application/json            
+   jsonplaceholderpost:
+      responseBuilder: SimpleResponseBuilder
       configByHttpMethods:
-         GET:   
+         POST:
             responseConfig:
                success:
                   status: 200
-                  body: "success"
+                  body: 'message successfully queued to be processed'
                   headers: 
-                     Content-Type:  application/json
-                     response-key1: response-value1
-                     response-key2: response-value2
-                     response-key3: response-value3
-                     response-key4: response-value4
-                     response-key5: response-value5            
+                     Content-Type: application/json
                failure:
                   status: 500
                   body: "failure"
                   headers: 
-                     response-key1: response-error-value1
-                     response-key2: response-error-value2
-                     response-key3: response-error-value3
-                     response-key4: response-error-value4
-                     response-key5: response-error-value5
+                     Content-Type: application/json            
+
+   reqres:
+      responseBuilder: SimpleResponseBuilder
+      configByHttpMethods:
+         POST:
+            responseConfig:
+               success:
+                  status: 200
+                  body: 'message successfully queued to be processed'
+                  headers: 
+                     Content-Type: application/json
+               failure:
+                  status: 500
+                  body: "failure"
+                  headers: 
+                     Content-Type: application/json            
    getDemoUser:
       configByHttpMethods:
          GET:
