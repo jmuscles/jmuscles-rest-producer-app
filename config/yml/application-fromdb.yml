@@ -1,0 +1,26 @@
+jmuscles:
+   dbProperties:
+      connections:
+         configPropsDb:
+            driverClassName: com.mysql.cj.jdbc.Driver
+            jdbcUrl: jdbc:mysql://localhost:3306/config-props-db
+            username: root
+            password: password
+      dataSources:
+         configPropsDb:
+            type: hikari
+            connectionPropsKey: configPropsDb
+            additionalProperties:
+               poolName: null
+               minimumIdle: 1
+               maximumPoolSize: 5
+               maxLifetime: 0
+               connectionTimeout: 180000
+enabled-db-config: true
+configPropsFromDB:
+   datasourceKey: configPropsDb
+   jpaProperties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      hibernate.hbm2ddl.auto: update
+      hibernate.show_sql: true
+      hibernate.format_sql: true

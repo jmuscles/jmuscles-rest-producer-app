@@ -1,0 +1,267 @@
+jmuscles:
+  db-properties:
+    connections:
+      asyncdb:
+        password: password
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/async-db
+        username: root
+      configPropsDb:
+        password: password
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/config-props-db
+        username: root
+    dataSources:
+      configPropsDb:
+        connectionPoolProperties: {}
+        connectionPropsKey: configPropsDb
+        type: hikari
+      asyncdb:
+        connectionPoolProperties:
+          minimumIdle: '1'
+          maximumPoolSize: '5'
+          connectionTimeout: '180000'
+          maxLifetime: '0'
+          poolName: ''
+        connectionPropsKey: asyncdb
+        type: hikari
+  rest-producer-config:
+    restcountries:
+      configByHttpMethods:
+        POST:
+          processingConfig: null
+          responseConfig:
+            failure:
+              body: failure
+              headers:
+                Content-Type: application/json
+              status: 500
+            success:
+              body: message successfully queued to be processed
+              headers:
+                Content-Type: application/json
+              status: 200
+      processingConfig: null
+      responseBuilder: SimpleResponseBuilder
+    isbnservice_soap:
+      configByHttpMethods:
+        POST:
+          processingConfig: null
+          responseConfig:
+            failure:
+              body: failure
+              headers:
+                Content-Type: text/xml
+              status: 500
+            success:
+              body: <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse
+                xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>
+              headers:
+                Content-Type: text/xml
+              status: 200
+      processingConfig: null
+      responseBuilder: SimpleResponseBuilder
+    numberconversion_soap:
+      configByHttpMethods:
+        POST:
+          processingConfig: null
+          responseConfig:
+            failure:
+              body: failure
+              headers:
+                response-key1: response-error-value1
+                response-key2: response-error-value2
+                Content-Type: text/xml
+              status: 500
+            success:
+              body: <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse
+                xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>
+              headers:
+                Content-Type: text/xml
+              status: 200
+      processingConfig: null
+      responseBuilder: SimpleResponseBuilder
+    countryinfoservice_soap:
+      configByHttpMethods:
+        POST:
+          processingConfig: null
+          responseConfig:
+            failure:
+              body: failure
+              headers:
+                response-key1: response-error-value1
+                response-key2: response-error-value2
+                Content-Type: text/xml
+              status: 500
+            success:
+              body: <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse
+                xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>
+              headers:
+                Content-Type: text/xml
+              status: 200
+      processingConfig: null
+      responseBuilder: CountryInfoServiceResponseBuilder
+    calculator_soap:
+      configByHttpMethods:
+        POST:
+          processingConfig: null
+          responseConfig:
+            failure:
+              body: failure
+              headers:
+                Content-Type: text/xml
+              status: 500
+      processingConfig: null
+      responseBuilder: null
+    tempconvert_soap:
+      configByHttpMethods:
+        POST:
+          processingConfig: null
+          responseConfig:
+            failure:
+              body: failure
+              headers:
+                Content-Type: text/xml
+              status: 500
+            success:
+              body: <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DivideResponse
+                xmlns="http://tempuri.org/"><DivideResult>1</DivideResult></DivideResponse></soap:Body></soap:Envelope>
+              headers:
+                Content-Type: text/xml
+              status: 200
+      processingConfig: null
+      responseBuilder: null
+    jsonplaceholderpost:
+      configByHttpMethods:
+        POST:
+          processingConfig:
+            activeProducersInOrder:
+            - rabbitmq
+            - syncProcessing
+            database: null
+            rabbitmq:
+              defaultExchange: EXCHANGE_1
+              defaultRoutingKey: DEMO_QUEUE
+              nonPersistentDeliveryMode: false
+          responseConfig:
+            failure:
+              body: failure
+              headers:
+                Content-Type: application/json
+              status: 500
+            success:
+              body: message successfully queued to be processed
+              headers:
+                Content-Type: application/json
+              status: 200
+      processingConfig: null
+      responseBuilder: SimpleResponseBuilder
+    getDemoUser:
+      configByHttpMethods:
+        GET:
+          processingConfig:
+            activeProducersInOrder:
+            - rabbitmq
+            - syncProcessing
+            database: null
+            rabbitmq:
+              defaultExchange: EXCHANGE_1
+              defaultRoutingKey: DEMO_QUEUE
+              nonPersistentDeliveryMode: false
+          responseConfig:
+            success:
+              body: success
+              headers:
+                response-key1: response-value1
+                response-key2: response-value2
+                response-key3: response-value3
+                response-key4: response-value4
+                response-key5: response-value5
+                Content-Type: text/html
+              status: 200
+            failure:
+              body: failure
+              headers:
+                response-key1: response-error-value1
+                response-key2: response-error-value2
+                response-key3: response-error-value3
+                response-key4: response-error-value4
+                response-key5: response-error-value5
+              status: 500
+      processingConfig: null
+      responseBuilder: null
+    reqres:
+      configByHttpMethods:
+        POST:
+          processingConfig: null
+          responseConfig:
+            success:
+              body: message successfully queued to be processed
+              headers:
+                Content-Type: application/json
+              status: 200
+            failure:
+              body: failure
+              headers:
+                Content-Type: application/json
+              status: 500
+      processingConfig: null
+      responseBuilder: SimpleResponseBuilder
+  async-producer-config:
+    activeProducersInOrder:
+    - rabbitmq
+    - database
+    - syncProcessing
+    database:
+      dataSourceKey: asyncdb
+      jpaProperties:
+        hibernate.format_sql: 'true'
+        hibernate.hbm2ddl.auto: update
+        hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+        hibernate.show_sql: 'true'
+    rabbitmq:
+      defaultExchange: AP_GENERIC_DIRECT_EXCHANGE
+      defaultRoutingKey: GENERIC_Q
+      nonPersistentDeliveryMode: false
+  executors-config:
+    restCalls:
+      test:
+        httpHeader: null
+        successCodePatterns:
+          '200': []
+        url: http://localhost:8080/place/list/IN
+        validator: null
+      createDemoUser:
+        httpHeader: null
+        successCodePatterns:
+          '200': []
+          '401': []
+        url: https://gorest.co.in/public/v1/users
+        validator: null
+      getDemoUser:
+        httpHeader: null
+        successCodePatterns:
+          '200': []
+        url: https://gorest.co.in/public/v1/users
+        validator: null
+    restConfig:
+      commonHeaders: null
+      connectionTimeout: 10000
+      readTimeout: 10000
+    sqlProcedures:
+      demo_proc_1:
+        dskey: ''
+        procedure: procedure_name
+        successKey: P_RESP_CODE
+        successValue: '000'
+        validator: null
+    sqlQueries:
+      insert_user_testdb:
+        dskey: testdb
+        query: insert into test.user(user_id, first_name, last_name, email, gender)
+          values(:user_id, :first_name, :last_name, :email, :gender);
+        validator: null

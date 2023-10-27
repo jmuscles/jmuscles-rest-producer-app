@@ -8,8 +8,11 @@ logging:
     org.springframework.web.client.RestTemplate: DEBUG
     com.jmuscles.rest.*: DEBUG
 management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-        
+   server:
+      ssl:
+         enabled: false
+   endpoints:
+      web:
+#base-path: /sssactuator
+         exposure:
+            include: '*'        
