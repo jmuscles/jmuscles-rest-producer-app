@@ -1,13 +1,22 @@
-# Use a base image with Java installed
-FROM openjdk:8-jdk-alpine
+# Build stage
+FROM maven:3.8-openjdk-8 AS build
+WORKDIR /app
 
+# Copy all projects needed for build
+# (Note: Assumes context is the root of the project)
+COPY jmuscles-spring ./jmuscles-spring
+COPY jmuscles-rest-producer-app ./jmuscles-rest-producer-app
+
+# Install libraries and build the app
+RUN mvn -f jmuscles-spring/pom.xml clean install -DskipTests
+RUN mvn -f jmuscles-rest-producer-app/pom.xml clean package -DskipTests
+
+# Run stage
+FROM openjdk:8-jdk-alpine
 MAINTAINER javamuscles
 
-# Copy the application JAR into the container
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} jmuscles-rest-producer-app-j8sb2713-1.0.jar
+WORKDIR /app
+COPY --from=build /app/jmuscles-rest-producer-app/target/*.jar jmuscles-rest-producer-app.jar
+COPY jmuscles-rest-producer-app/aws-opentelemetry-agent.jar opentelemetry-javaagent.jar
 
-#RUN curl -L https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar --output opentelemetry-javaagent.jar
-# Set the ENTRYPOINT with CMD to pass JAVA_OPTS to the Java application
-COPY aws-opentelemetry-agent.jar opentelemetry-javaagent.jar
-ENTRYPOINT [ "sh", "-c", "java -javaagent:opentelemetry-javaagent.jar $JAVA_OPTS -jar jmuscles-rest-producer-app-j8sb2713-1.0.jar" ]
+ENTRYPOINT [ "sh", "-c", "java -javaagent:opentelemetry-javaagent.jar $JAVA_OPTS -jar jmuscles-rest-producer-app.jar" ]

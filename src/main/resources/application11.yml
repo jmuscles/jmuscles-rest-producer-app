@@ -15,4 +15,4 @@ management:
       web:
 #base-path: /sssactuator
          exposure:
-            include: '*'        
+            include: '*'      
