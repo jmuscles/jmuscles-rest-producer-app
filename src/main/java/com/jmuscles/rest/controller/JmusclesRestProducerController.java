@@ -1,12 +1,9 @@
-/**
- * 
- */
 package com.jmuscles.rest.controller;
 
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +35,9 @@ public class JmusclesRestProducerController {
 	@Autowired
 	private JmusclesRestControllerBean jmusclesRestControllerBean;
 
-	// TODO make use of un-used parameters
 	@PostMapping("/process/{tenantId}/{configKey}")
 	public ResponseEntity<?> queuePayload(@PathVariable String tenantId, @PathVariable String configKey,
-			@RequestBody PayloadRequest request
-	) throws JsonProcessingException {
+			@RequestBody PayloadRequest request) throws JsonProcessingException {
 		return jmusclesRestControllerBean.queuePayload(request.getPayload(), request.getTrackingDetail());
 	}
 
