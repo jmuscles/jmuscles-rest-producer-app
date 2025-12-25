@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.13</version>
+		<version>3.4.1</version>
 	</parent>
 
 	<groupId>com.jmuscles</groupId>
@@ -15,19 +15,13 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<spring-boot.version>2.7.13</spring-boot.version>
-		<spring-cloud.version>2021.0.3</spring-cloud.version>
+		<spring-boot.version>3.4.1</spring-boot.version>
+		<spring-cloud.version>2024.0.0</spring-cloud.version>
 		<jasypt.version>1.9.3</jasypt.version>
 
-		<jmuscles-post-fix>j8sb2713-0.2</jmuscles-post-fix>
-		<jmuscles-rabbitmq-producer.version>${jmuscles-post-fix}</jmuscles-rabbitmq-producer.version>
-		<jmuscles-rest-producer.version>${jmuscles-post-fix}</jmuscles-rest-producer.version>
-
-		<javax.annotation-api.version>1.3.2</javax.annotation-api.version>
-		<otel-api.version>1.28.0</otel-api.version>
-		<otel-instrumentation-annotations.version>1.28.0</otel-instrumentation-annotations.version>
-		<otel-api-trace.version>0.13.1</otel-api-trace.version>
-		<otel-api-metrics.version>1.10.0-alpha-rc.1</otel-api-metrics.version>
+		<jmuscles-post-fix>j21sb341-1.0</jmuscles-post-fix>
+		<jmuscles-rabbitmq-producer.version>1.0</jmuscles-rabbitmq-producer.version>
+		<jmuscles-rest-producer.version>1.0</jmuscles-rest-producer.version>
 
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
@@ -146,34 +140,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api</artifactId>
-			<version>${otel-api.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry.instrumentation</groupId>
-			<artifactId>opentelemetry-instrumentation-annotations</artifactId>
-			<version>${otel-instrumentation-annotations.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api-trace</artifactId>
-			<version>${otel-api-trace.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api-metrics</artifactId>
-			<version>${otel-api-metrics.version}</version>
-		</dependency>
-
 
 	</dependencies>
 
