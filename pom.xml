@@ -22,10 +22,6 @@
 		<jmuscles-post-fix>j21sb341-1.0</jmuscles-post-fix>
 		<jmuscles-rabbitmq-producer.version>1.0</jmuscles-rabbitmq-producer.version>
 		<jmuscles-rest-producer.version>1.0</jmuscles-rest-producer.version>
-		<otel-api.version>1.28.0</otel-api.version>
-		<otel-instrumentation-annotations.version>1.28.0</otel-instrumentation-annotations.version>
-		<otel-api-trace.version>0.13.1</otel-api-trace.version>
-		<otel-api-metrics.version>1.10.0-alpha-rc.1</otel-api-metrics.version>
 
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
@@ -147,31 +143,6 @@
 			<groupId>jakarta.annotation</groupId>
 			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api</artifactId>
-			<version>${otel-api.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry.instrumentation</groupId>
-			<artifactId>opentelemetry-instrumentation-annotations</artifactId>
-			<version>${otel-instrumentation-annotations.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api-trace</artifactId>
-			<version>${otel-api-trace.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api-metrics</artifactId>
-			<version>${otel-api-metrics.version}</version>
-		</dependency>
-
 
 	</dependencies>
 
